@@ -1,0 +1,164 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/bulma.css">
+<link rel="stylesheet" href="css/fontawesome-all.min.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.marquee.min.js"></script>
+<script>
+	$(function(){
+		$('.marquee1').marquee({
+			//duration in milliseconds of the marquee
+			duration: 40000,
+			//gap in pixels between the tickers
+			gap: 50,
+			//time in milliseconds before the marquee will start animating
+			delayBeforeStart: 0,
+			//'left' or 'right'
+			direction: 'left',
+			//true or false - should the marquee be duplicated to show an effect of continues flow
+			duplicated: true
+		});
+		$('.marquee2').marquee({
+			//duration in milliseconds of the marquee
+			duration: 40000,
+			//gap in pixels between the tickers
+			gap: 50,
+			//time in milliseconds before the marquee will start animating
+			delayBeforeStart: 0,
+			//'left' or 'right'
+			direction: 'left',
+			//true or false - should the marquee be duplicated to show an effect of continues flow
+			duplicated: true
+		});
+		$.getJSON("/stock.json", function(data) {
+			console.info(data);
+		});
+	});
+</script>
+
+<style type="text/css">
+.container {
+  width: 3500px;
+  max-width: 3500px;
+}
+.marquee1, .marquee2 {
+  width: 3500px;
+  height: 65px;
+  overflow: hidden;
+  background: #000;
+  max-width: 3500px;
+  padding-top: 6px;
+}
+table {
+	color: #fff;
+	font-size: 35px;
+}
+table td {
+	width: 340px;
+}
+</style>
+<div class="container is-fullhd">
+    <div class="marquee1">
+    	<table>
+    		<tr>
+			    <td>
+			    	上海机场 &nbsp;sh600009&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-down has-text-success"></i>
+			        </span>
+			        <span class="has-text-success">50.090&nbsp;-1.456%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>东风汽车 &nbsp;sh600006&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-up has-text-danger"></i>
+			        </span>
+			        <span class="has-text-danger">5.240&nbsp; 0.963%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	浦发银行 &nbsp;sh600000&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-up has-text-danger"></i>
+			        </span>
+			        <span class="has-text-danger">12.500&nbsp;0.160%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>白云机场 &nbsp;sh600004&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-up has-text-danger"></i>
+			        </span>
+			        <span class="has-text-danger">16.500&nbsp; 1.227%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	中国国贸 &nbsp;sh600007&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-up has-text-danger"></i>
+			        </span>
+			        <span class="has-text-danger">15.340&nbsp; 1.321%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+		    </tr>
+	    </table>
+    </div>
+
+    <div class="marquee2">
+    	<table>
+    		<tr>
+			    <td>华能国际 &nbsp;sh600011&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-down has-text-success"></i>
+			        </span>
+			        <span class="has-text-success">6.990&nbsp;  -0.143%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	首创股份 &nbsp;sh600008&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-up has-text-danger"></i>
+			        </span>
+			        <span class="has-text-danger">5.250&nbsp;  0.191%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	皖通高速 &nbsp;sh600012&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-down has-text-success"></i>
+			        </span>
+			        <span class="has-text-success">10.770&nbsp;  -0.185%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	民生银行 &nbsp;sh600016&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-down has-text-success"></i>
+			        </span>
+			        <span class="has-text-success">8.500&nbsp;  -0.118%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+			    <td>
+			    	上港集团 &nbsp;sh600018&nbsp;
+			    </td>
+			    <td>
+			    	<span class="icon">
+			            <i class="fas fa-caret-down has-text-success"></i>
+			        </span>
+			        <span class="has-text-success">7.460&nbsp;  -0.798%&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			    </td>
+		    </tr>
+	    </table>
+    </div>
+</div>
+</body>
+</html>
