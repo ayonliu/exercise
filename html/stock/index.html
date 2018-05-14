@@ -9,6 +9,23 @@
 <script src="js/jquery.marquee.min.js"></script>
 
 <!-- component template -->
+<script type="text/x-template" id="mq-template">
+  <table>
+    <tbody>
+      <tr>
+        <td v-for="data in stocks">
+          {{data['name']}}&nbsp;{{data['symbol']}}&nbsp;
+          <span class="icon">
+	        <i class="fas fa-caret-down has-text-success"></i>
+	      </span>
+	      <span class="has-text-success">
+	      	{{data['trade']}}&nbsp;{{data['pricechange']}}%&nbsp;&nbsp;&nbsp;&nbsp;
+	      </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>
 <script type="text/x-template" id="grid-template">
   <table>
     <thead>
@@ -35,6 +52,33 @@
 	// https://cn.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html
 	$(function(){
 		// register the grid component
+		Vue.component('mq-grid', {
+		  template: '#mq-template',
+		  props: {
+		    stocks: Array
+		  }
+		});
+		// bootstrap the mq
+		var mq1 = new Vue({
+		  el: '#marquee1',
+		  data: {
+		    mqData: [
+		      { name: '上海机场', symbol: 'sh600009', trade: 50.090, pricechange: -1.456 },
+		      { name: '中国太保', symbol: 'sh601601', trade: 36.170, pricechange: 0.840 },
+		      { name: '中国核电', symbol: 'sh601985', trade: 6.520, pricechange: -0.030 },
+		      { name: '江苏银行', symbol: 'sh600919', trade: 7.260, pricechange: 0.040 },
+		      { name: '招商证券', symbol: 'sh600999', trade: 17.060, pricechange: 0.050 }
+		    ]
+		  },
+		  mounted () {
+		  	console.info(this.mqData);
+		    axios
+		      .get('/stock/get_random_stocks.php')
+		      .then(response => (console.info(response)))
+		  }
+		});
+		// register the grid component
+		/*
 		Vue.component('demo-grid', {
 		  template: '#grid-template',
 		  props: {
@@ -87,8 +131,9 @@
 		    }
 		  }
 		});
-
+        */
 		// bootstrap the demo
+		/*
 		var demo = new Vue({
 		  el: '#demo',
 		  data: {
@@ -102,13 +147,16 @@
 		    ]
 		  },
 		  mounted () {
+		  	console.info(this.gridData);
 		    axios
 		      .get('/stock/get_random_stocks.php')
 		      .then(response => (console.info(response)))
 		  }
-		})
+		});
+		*/
 
 		$('.marquee1')
+		/*
 		.bind('finished', function(){
 			//Change text to something else after first loop finishes
 			$(this).marquee('destroy');
@@ -129,6 +177,7 @@
 				duplicated: true
 			});
 		})
+		*/
 		.marquee({
 			speed: 100,
 			//duration in milliseconds of the marquee
@@ -152,7 +201,7 @@
 			//time in milliseconds before the marquee will start animating
 			delayBeforeStart: 0,
 			//'left' or 'right'
-			direction: 'left',
+			direction: 'right',
 			//true or false - should the marquee be duplicated to show an effect of continues flow
 			duplicated: true,
 			startVisible: true
@@ -176,30 +225,30 @@
   max-width: 3500px;
   padding-top: 6px;
 }
-table, .mq_text {
+.marquee1 table, .marquee2 table, .mq_text {
 	color: #fff;
 	font-size: 35px;
 }
 table td {
-	width: 340px;
+	width: 680px;
 }
 </style>
 <div class="container is-fullhd">
-    <div class="marquee1">
+    <div class="marquee1" id="marquee1">
+	    <mq-grid :stocks="mqData">
+		</mq-grid>
+		<!--
     	<table>
     		<tr>
 			    <td>
 			    	上海机场 &nbsp;sh600009&nbsp;
-			    </td>
-			    <td>
+			    
 			    	<span class="icon">
 			            <i class="fas fa-caret-down has-text-success"></i>
 			        </span>
 			        <span class="has-text-success">50.090&nbsp;-1.456%&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			    </td>
 			    <td>东风汽车 &nbsp;sh600006&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-up has-text-danger"></i>
 			        </span>
@@ -207,16 +256,12 @@ table td {
 			    </td>
 			    <td>
 			    	浦发银行 &nbsp;sh600000&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-up has-text-danger"></i>
 			        </span>
 			        <span class="has-text-danger">12.500&nbsp;0.160%&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			    </td>
 			    <td>白云机场 &nbsp;sh600004&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-up has-text-danger"></i>
 			        </span>
@@ -224,8 +269,6 @@ table td {
 			    </td>
 			    <td>
 			    	中国国贸 &nbsp;sh600007&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-up has-text-danger"></i>
 			        </span>
@@ -233,14 +276,13 @@ table td {
 			    </td>
 		    </tr>
 	    </table>
+	-->
     </div>
 
     <div class="marquee2">
     	<table>
     		<tr>
 			    <td>华能国际 &nbsp;sh600011&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-down has-text-success"></i>
 			        </span>
@@ -248,8 +290,6 @@ table td {
 			    </td>
 			    <td>
 			    	首创股份 &nbsp;sh600008&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-up has-text-danger"></i>
 			        </span>
@@ -257,8 +297,6 @@ table td {
 			    </td>
 			    <td>
 			    	皖通高速 &nbsp;sh600012&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-down has-text-success"></i>
 			        </span>
@@ -266,8 +304,6 @@ table td {
 			    </td>
 			    <td>
 			    	民生银行 &nbsp;sh600016&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-down has-text-success"></i>
 			        </span>
@@ -275,8 +311,6 @@ table td {
 			    </td>
 			    <td>
 			    	上港集团 &nbsp;sh600018&nbsp;
-			    </td>
-			    <td>
 			    	<span class="icon">
 			            <i class="fas fa-caret-down has-text-success"></i>
 			        </span>
@@ -286,7 +320,7 @@ table td {
 	    </table>
     </div>
 
-	<!-- demo root element -->
+	<!-- demo root element 
 	<div id="demo">
 	  <form id="search">
 	    Search <input name="query" v-model="searchQuery">
@@ -297,6 +331,7 @@ table td {
 	    :filter-key="searchQuery">
 	  </demo-grid>
 	</div>
+	-->
 </div>
 </body>
 </html>
