@@ -3,23 +3,148 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/bulma.css">
 <link rel="stylesheet" href="css/fontawesome-all.min.css">
+<script src="js/vue.min.js"></script>
+<script src="js/axios.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.marquee.min.js"></script>
+
+<!-- component template -->
+<script type="text/x-template" id="grid-template">
+  <table>
+    <thead>
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key }">
+          {{ key | capitalize }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{entry[key]}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>
 <script>
+	// https://cn.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html
 	$(function(){
-		$('.marquee1').marquee({
+		// register the grid component
+		Vue.component('demo-grid', {
+		  template: '#grid-template',
+		  props: {
+		    data: Array,
+		    columns: Array,
+		    filterKey: String
+		  },
+		  data: function () {
+		    var sortOrders = {}
+		    this.columns.forEach(function (key) {
+		      sortOrders[key] = 1
+		    })
+		    return {
+		      sortKey: '',
+		      sortOrders: sortOrders
+		    }
+		  },
+		  computed: {
+		    filteredData: function () {
+		      var sortKey = this.sortKey
+		      var filterKey = this.filterKey && this.filterKey.toLowerCase()
+		      var order = this.sortOrders[sortKey] || 1
+		      var data = this.data
+		      if (filterKey) {
+		        data = data.filter(function (row) {
+		          return Object.keys(row).some(function (key) {
+		            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+		          })
+		        })
+		      }
+		      if (sortKey) {
+		        data = data.slice().sort(function (a, b) {
+		          a = a[sortKey]
+		          b = b[sortKey]
+		          return (a === b ? 0 : a > b ? 1 : -1) * order
+		        })
+		      }
+		      return data
+		    }
+		  },
+		  filters: {
+		    capitalize: function (str) {
+		      return str.charAt(0).toUpperCase() + str.slice(1)
+		    }
+		  },
+		  methods: {
+		    sortBy: function (key) {
+		      this.sortKey = key
+		      this.sortOrders[key] = this.sortOrders[key] * -1
+		    }
+		  }
+		});
+
+		// bootstrap the demo
+		var demo = new Vue({
+		  el: '#demo',
+		  data: {
+		    searchQuery: '',
+		    gridColumns: ['name', 'power'],
+		    gridData: [
+		      { name: 'Chuck Norris', power: Infinity },
+		      { name: 'Bruce Lee', power: 9000 },
+		      { name: 'Jackie Chan', power: 7000 },
+		      { name: 'Jet Li', power: 8000 }
+		    ]
+		  },
+		  mounted () {
+		    axios
+		      .get('/stock/get_random_stocks.php')
+		      .then(response => (console.info(response)))
+		  }
+		})
+
+		$('.marquee1')
+		.bind('finished', function(){
+			//Change text to something else after first loop finishes
+			$(this).marquee('destroy');
+			//Load new content using Ajax and update the marquee container
+			$(this).html('<span class="mq_text">Some new data loaded using ajax</span>')
+			//Apply marquee plugin again
+			.marquee({
+				speed: 100,
+				//duration in milliseconds of the marquee
+				duration: 40000,//40000,
+				//gap in pixels between the tickers
+				gap: 50,
+				//time in milliseconds before the marquee will start animating
+				delayBeforeStart: 0,
+				//'left' or 'right'
+				direction: 'right',
+				//true or false - should the marquee be duplicated to show an effect of continues flow
+				duplicated: true
+			});
+		})
+		.marquee({
+			speed: 100,
 			//duration in milliseconds of the marquee
-			duration: 40000,
+			duration: 10000,//40000,
 			//gap in pixels between the tickers
 			gap: 50,
 			//time in milliseconds before the marquee will start animating
 			delayBeforeStart: 0,
 			//'left' or 'right'
-			direction: 'left',
+			direction: 'right',
 			//true or false - should the marquee be duplicated to show an effect of continues flow
-			duplicated: true
+			duplicated: true,
+			startVisible: true
 		});
 		$('.marquee2').marquee({
+			speed: 100,
 			//duration in milliseconds of the marquee
 			duration: 40000,
 			//gap in pixels between the tickers
@@ -29,11 +154,12 @@
 			//'left' or 'right'
 			direction: 'left',
 			//true or false - should the marquee be duplicated to show an effect of continues flow
-			duplicated: true
+			duplicated: true,
+			startVisible: true
 		});
-		$.getJSON("/stock.json", function(data) {
-			console.info(data);
-		});
+		// $.getJSON("/stock.json", function(data) {
+		// 	console.info(data);
+		// });
 	});
 </script>
 
@@ -50,7 +176,7 @@
   max-width: 3500px;
   padding-top: 6px;
 }
-table {
+table, .mq_text {
 	color: #fff;
 	font-size: 35px;
 }
@@ -159,6 +285,18 @@ table td {
 		    </tr>
 	    </table>
     </div>
+
+	<!-- demo root element -->
+	<div id="demo">
+	  <form id="search">
+	    Search <input name="query" v-model="searchQuery">
+	  </form>
+	  <demo-grid
+	    :data="gridData"
+	    :columns="gridColumns"
+	    :filter-key="searchQuery">
+	  </demo-grid>
+	</div>
 </div>
 </body>
 </html>

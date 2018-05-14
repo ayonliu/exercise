@@ -124,7 +124,7 @@ foreach ($rand_keys_shang as $stock_key) {
 $all['shang'] = $shang_stocks;
 foreach ($rand_keys_shen as $stock_key) {
     $key = 'sz'.str_pad($shen[$stock_key], 6, '0', STR_PAD_LEFT);
-    echo $key.'<br/>';
+    // echo $key.'<br/>';
     $shen_stocks[] = json_decode(MyRedis::get($key), true);
 }
 $all['shen'] = $shen_stocks;

@@ -167,6 +167,7 @@ while (true) {
     $url = $shall.http_build_query($para);
     $json = simple_get($url);
     $arr  = json_decode($json, true);
+    // echo $url.PHP_EOL;
     // print_r($arr);die;
     if (0 == $arr['error_code'] && $arr['result']) {
         // $total_pages = $arr['result']['totalCount']/$arr['result']['num'];
