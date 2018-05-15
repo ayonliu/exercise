@@ -8,19 +8,30 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.marquee.min.js"></script>
 
-<!-- component template -->
+<!-- component template  -->
 <script type="text/x-template" id="mq-template">
   <table>
     <tbody>
       <tr>
         <td v-for="data in stocks">
+          <template v-if="data['pricechange']<0">
           {{data['name']}}&nbsp;{{data['symbol']}}&nbsp;
           <span class="icon">
 	        <i class="fas fa-caret-down has-text-success"></i>
 	      </span>
 	      <span class="has-text-success">
-	      	{{data['trade']}}&nbsp;{{data['pricechange']}}%&nbsp;&nbsp;&nbsp;&nbsp;
+	      	{{data['trade']}}&nbsp;&nbsp;&nbsp;{{data['pricechange']}}%&nbsp;&nbsp;&nbsp;
 	      </span>
+	      </template>
+	      <template v-else>
+		    {{data['name']}}&nbsp;{{data['symbol']}}&nbsp;
+	        <span class="icon">
+		      <i class="fas fa-caret-up has-text-danger"></i>
+		    </span>
+		    <span class="has-text-danger">
+		      {{data['trade']}}&nbsp;&nbsp;&nbsp;{{data['pricechange']}}%&nbsp;&nbsp;&nbsp;
+		    </span>
+		  </template>
         </td>
       </tr>
     </tbody>
@@ -53,7 +64,7 @@
 		  },
 		  methods: {
 		    refresh: function () {
-		        console.info(this.mqData);
+		        // console.info(this.mqData);
 			  	var vm = this
 			    axios
 			      .get('/stock/get_random_stocks.php')
@@ -61,15 +72,17 @@
 			      	// console.info(response.data.shang)
 			      	vm.mqData = response.data.shang;
 			      	vm.shengData = response.data.shen;
-			      	console.info(vm.mqData);
+			      	// console.info(vm.mqData);
 			      	})
 			      .catch(error => {
 			        console.log(error)
 			      })
 		    }
 		  },
-		  mounted () {
-		  	console.info(this.mqData);
+		  // mounted () {
+		  /*
+		  created () {
+		  	// console.info(this.mqData);
 		  	var vm = this
 		    axios
 		      .get('/stock/get_random_stocks.php')
@@ -77,12 +90,12 @@
 		      	// console.info(response.data.shang)
 		      	vm.mqData = response.data.shang;
 		      	vm.shengData = response.data.shen;
-		      	console.info(vm.mqData);
+		      	// console.info(vm.mqData);
 		      	})
 		      .catch(error => {
 		        console.log(error)
 		      })
-		  }
+		  }*/
 		});
 
   	    $('.marquee1')
@@ -92,7 +105,7 @@
 		.marquee({
 			speed: 1200,
 			//duration in milliseconds of the marquee
-			// duration: 10000,//40000,
+			// duration: 40000,
 			//gap in pixels between the tickers
 			gap: 50,
 			//time in milliseconds before the marquee will start animating
@@ -111,7 +124,7 @@
 		  .marquee({
 			speed: 1200,
 			//duration in milliseconds of the marquee
-			duration: 40000,
+			// duration: 40000,
 			//gap in pixels between the tickers
 			gap: 50,
 			//time in milliseconds before the marquee will start animating
