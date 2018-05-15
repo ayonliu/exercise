@@ -2,6 +2,35 @@
 
 include "redis.php";
 
+$hour = date('H');
+$min  = date('i');
+$request = true;
+// 不住开盘时间内
+if (9 > $hour || 15 < $hour) {
+    $request = false;
+}
+if (15 == $hour && $min) {
+    $request = false;
+}
+if ($hour == 9) {
+    if ($min < 30) {
+        $request = false;
+    }
+}
+if (11 == $hour) {
+    if ($min > 30) {
+        $request = false;
+    }
+}
+if (12 == $hour) {
+    $request = false;
+}
+
+if (!$request) {
+    echo "Stock market not open this time: ".date('Y-m-d H:i:s').PHP_EOL;
+    die;
+}
+
 $shang = array(
     603993,
     601998,
