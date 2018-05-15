@@ -119,13 +119,19 @@ $shang_stocks = array();
 $shen_stocks = array();
 foreach ($rand_keys_shang as $stock_key) {
     $key = 'sh'.$shang[$stock_key];
-    $shang_stocks[] = json_decode(MyRedis::get($key), true);
+    $get = MyRedis::get($key);
+    if ($get) {
+        $shang_stocks[] = json_decode($get, true);   
+    }
 }
 $all['shang'] = $shang_stocks;
 foreach ($rand_keys_shen as $stock_key) {
     $key = 'sz'.str_pad($shen[$stock_key], 6, '0', STR_PAD_LEFT);
     // echo $key.'<br/>';
-    $shen_stocks[] = json_decode(MyRedis::get($key), true);
+    $get = MyRedis::get($key);
+    if ($get) {
+        $shen_stocks[] = json_decode($get, true);
+    }
 }
 $all['shen'] = $shen_stocks;
 // echo '<pre>';
