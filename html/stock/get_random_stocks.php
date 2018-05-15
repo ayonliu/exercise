@@ -107,8 +107,8 @@ $shen=array(
     1
 );
 
-$rand_keys_shang = array_rand($shang, 10);
-$rand_keys_shen = array_rand($shen, 10);
+$rand_keys_shang = array_rand($shang, 5);
+$rand_keys_shen = array_rand($shen, 5);
 shuffle($rand_keys_shang);
 shuffle($rand_keys_shen);
 

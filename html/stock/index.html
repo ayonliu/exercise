@@ -60,21 +60,50 @@
 		});
 		// bootstrap the mq
 		var mq1 = new Vue({
-		  el: '#marquee1',
+		  el: '#marquee',
 		  data: {
 		    mqData: [
+		    /*
 		      { name: '上海机场', symbol: 'sh600009', trade: 50.090, pricechange: -1.456 },
 		      { name: '中国太保', symbol: 'sh601601', trade: 36.170, pricechange: 0.840 },
 		      { name: '中国核电', symbol: 'sh601985', trade: 6.520, pricechange: -0.030 },
 		      { name: '江苏银行', symbol: 'sh600919', trade: 7.260, pricechange: 0.040 },
 		      { name: '招商证券', symbol: 'sh600999', trade: 17.060, pricechange: 0.050 }
-		    ]
+		    */
+		    ],
+		    shengData: []
+		  },
+		  methods: {
+		    refresh: function () {
+		        console.info(this.mqData);
+			  	var vm = this
+			    axios
+			      .get('/stock/get_random_stocks.php')
+			      .then(function (response) {
+			      	// console.info(response.data.shang)
+			      	vm.mqData = response.data.shang;
+			      	vm.shengData = response.data.shen;
+			      	console.info(vm.mqData);
+			      	})
+			      .catch(error => {
+			        console.log(error)
+			      })
+		    }
 		  },
 		  mounted () {
 		  	console.info(this.mqData);
+		  	var vm = this
 		    axios
 		      .get('/stock/get_random_stocks.php')
-		      .then(response => (console.info(response)))
+		      .then(function (response) {
+		      	// console.info(response.data.shang)
+		      	vm.mqData = response.data.shang;
+		      	vm.shengData = response.data.shen;
+		      	console.info(vm.mqData);
+		      	})
+		      .catch(error => {
+		        console.log(error)
+		      })
 		  }
 		});
 		// register the grid component
@@ -155,45 +184,57 @@
 		});
 		*/
 
-		$('.marquee1')
-		/*
-		.bind('finished', function(){
-			//Change text to something else after first loop finishes
-			$(this).marquee('destroy');
-			//Load new content using Ajax and update the marquee container
-			$(this).html('<span class="mq_text">Some new data loaded using ajax</span>')
-			//Apply marquee plugin again
-			.marquee({
-				speed: 100,
-				//duration in milliseconds of the marquee
-				duration: 40000,//40000,
-				//gap in pixels between the tickers
-				gap: 50,
-				//time in milliseconds before the marquee will start animating
-				delayBeforeStart: 0,
-				//'left' or 'right'
-				direction: 'right',
-				//true or false - should the marquee be duplicated to show an effect of continues flow
-				duplicated: true
-			});
-		})
-		*/
+  	    $('.marquee1')
+		  .bind('finished', function(){
+		  	mq1.refresh();
+  	        /*
+		    axios
+		      .get('/stock/get_random_stocks.php')
+		      .then(function (response) {
+		      	vm.mqData = response.data.shang;
+		      	console.info(vm.mqData);
+		      	//Change text to something else after first loop finishes
+				$(this).marquee('destroy');
+				//Load new content using Ajax and update the marquee container
+				$(this)
+				//Apply marquee plugin again
+				.marquee({
+					speed: 100,
+					//duration in milliseconds of the marquee
+					duration: 40000,//40000,
+					//gap in pixels between the tickers
+					gap: 50,
+					//time in milliseconds before the marquee will start animating
+					delayBeforeStart: 0,
+					//'left' or 'right'
+					direction: 'right',
+					//true or false - should the marquee be duplicated to show an effect of continues flow
+					duplicated: true
+				});
+		    })
+	        */
+		  })
 		.marquee({
-			speed: 100,
+			speed: 300,
 			//duration in milliseconds of the marquee
-			duration: 10000,//40000,
+			// duration: 10000,//40000,
 			//gap in pixels between the tickers
 			gap: 50,
 			//time in milliseconds before the marquee will start animating
 			delayBeforeStart: 0,
 			//'left' or 'right'
-			direction: 'right',
+			direction: 'down',
 			//true or false - should the marquee be duplicated to show an effect of continues flow
-			duplicated: true,
+			duplicated: false,
 			startVisible: true
 		});
-		$('.marquee2').marquee({
-			speed: 100,
+
+		$('.marquee2')
+		  // .bind('finished', function(){
+		  	// mq2.refresh();
+		  // })
+		  .marquee({
+			speed: 300,
 			//duration in milliseconds of the marquee
 			duration: 40000,
 			//gap in pixels between the tickers
@@ -201,9 +242,9 @@
 			//time in milliseconds before the marquee will start animating
 			delayBeforeStart: 0,
 			//'left' or 'right'
-			direction: 'right',
+			direction: 'down',
 			//true or false - should the marquee be duplicated to show an effect of continues flow
-			duplicated: true,
+			duplicated: false,
 			startVisible: true
 		});
 		// $.getJSON("/stock.json", function(data) {
@@ -233,8 +274,8 @@ table td {
 	width: 680px;
 }
 </style>
-<div class="container is-fullhd">
-    <div class="marquee1" id="marquee1">
+<div class="container is-fullhd" id="marquee">
+    <div class="marquee1">
 	    <mq-grid :stocks="mqData">
 		</mq-grid>
 		<!--
@@ -280,6 +321,9 @@ table td {
     </div>
 
     <div class="marquee2">
+    	<mq-grid :stocks="shengData">
+		</mq-grid>
+    	<!--
     	<table>
     		<tr>
 			    <td>华能国际 &nbsp;sh600011&nbsp;
@@ -318,6 +362,7 @@ table td {
 			    </td>
 		    </tr>
 	    </table>
+	    -->
     </div>
 
 	<!-- demo root element 
