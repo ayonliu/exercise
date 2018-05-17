@@ -10,7 +10,7 @@
 
 <!-- component template  -->
 <script type="text/x-template" id="mq-template">
-  <table>
+  <table class="mq_table" style="display: block;">
     <tbody>
       <tr>
         <td v-for="data in stocks">
@@ -98,6 +98,13 @@
 		  }*/
 		});
 
+		mq1.refresh();
+		setInterval(function(){
+			$('table').slideToggle(200);
+			mq1.refresh();
+            $('table').slideToggle(200);
+		}, 2500);
+        /*
   	    $('.marquee1')
 		  .bind('finished', function(){
 		  	mq1.refresh();
@@ -135,9 +142,7 @@
 			duplicated: false,
 			startVisible: true
 		});
-		// $.getJSON("/stock.json", function(data) {
-		// 	console.info(data);
-		// });
+		*/
 	});
 </script>
 
@@ -159,7 +164,7 @@
 	font-size: 35px;
 }
 table td {
-	width: 680px;
+	width: 690px;
 }
 </style>
 <div class="container is-fullhd" id="marquee">
