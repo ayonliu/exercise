@@ -100,10 +100,10 @@
 
 		mq1.refresh();
 		setInterval(function(){
-			$('table').slideToggle(200);
-			mq1.refresh();
+		    $('table').slideToggle(200);
+		    mq1.refresh();
             $('table').slideToggle(200);
-		}, 2500);
+		}, 5500);
         /*
   	    $('.marquee1')
 		  .bind('finished', function(){
@@ -157,14 +157,19 @@
   overflow: hidden;
   background: #000;
   max-width: 3500px;
-  padding-top: 6px;
+}
+.marquee1 {
+  padding-top: 15px;
+}
+.marquee2 {
+  padding-top: 8px;
 }
 .marquee1 table, .marquee2 table, .mq_text {
 	color: #fff;
-	font-size: 35px;
+	font-size: 30px;
 }
 table td {
-	width: 690px;
+	width: 610px;
 }
 </style>
 <div class="container is-fullhd" id="marquee">
